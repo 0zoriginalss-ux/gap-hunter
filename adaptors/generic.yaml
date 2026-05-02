@@ -1,0 +1,75 @@
+# Generic Adaptor
+#
+# Fallback adaptor when no domain-specific adaptor fits. Stakeholder list is broad,
+# methodology focus is unopinionated. Use this when the project mixes domains or
+# falls outside the four specialised adaptors.
+
+adaptor:
+  id: generic
+  name: Generic Project
+  description: Fallback when no specialised adaptor fits. Broad stakeholder coverage, unopinionated methodology focus.
+
+stakeholders:
+  default:
+    - id: end_user
+      lens: "The person actually using or affected by the work. Often under-represented in technical planning."
+    - id: engineering_team
+      lens: "Maintainability, on-call burden, learning curve, technical debt accumulation."
+    - id: product_owner
+      lens: "What problem is actually being solved and why now. Distinguishes real need from imagined need."
+    - id: security_team
+      lens: "Access controls, secrets, audit, incident response, threat surface changes."
+    - id: legal_counsel
+      lens: "Contract, IP, terms-of-service, liability boundaries."
+    - id: support_team
+      lens: "What they will have to explain or fix. Onboarding cost and runbook impact."
+    - id: finance
+      lens: "Cost model, budget impact, recurring vs. one-time cost."
+  optional:
+    - id: compliance
+      lens: "Regulatory exposure if any."
+      include_if: "Project touches personal data, financial transactions, or regulated content."
+    - id: external_partner
+      lens: "Integration partners, vendors with API contracts, downstream consumers."
+      include_if: "Project has external integration surface."
+
+methodology_focus:
+  emphasise:
+    - architecture_decision_records
+    - lightweight_documentation
+    - clear_rollback_plans
+    - explicit_invariants
+  deprioritise: []
+
+contradiction_emphasis:
+  now:
+    - "Tooling decisions with migration cost if reconsidered"
+    - "Architecture lock-in for the upcoming phase"
+    - "Stakeholder concern conflicts with technical decision"
+  mid:
+    - "Scaling assumptions vs. growth trajectory"
+    - "Team composition vs. tech stack maintainability"
+    - "Cost trajectory at projected scale"
+  long:
+    - "Regulatory environment shifts in target markets"
+    - "Technology obsolescence risk"
+    - "Vendor or dependency lock-in"
+
+default_mode_recommendation: plan
+
+structure_techniques_likely_relevant:
+  - architecture_decision_records
+  - sequence_diagrams_for_critical_flows
+  - state_machines_where_states_matter
+  - decision_tables_for_branching_logic
+
+source_quality_filters:
+  prefer:
+    - engineering_blogs_with_concrete_data
+    - post_mortems
+    - peer_reviewed_research
+    - official_documentation
+  avoid:
+    - vendor_marketing
+    - generic_listicles
+    - opinion_pieces_without_evidence

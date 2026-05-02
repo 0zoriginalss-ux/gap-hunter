@@ -1,0 +1,84 @@
+# ML Model Adaptor
+#
+# For pre-execution research on a machine-learning model launch, retraining cycle,
+# or significant model architecture change. Emphasises data quality, drift, and ethics.
+
+adaptor:
+  id: ml-model
+  name: ML Model Rollout
+  description: Model training, deployment, or significant retraining where data quality, drift, ethics, and eval methodology matter.
+
+stakeholders:
+  default:
+    - id: data_engineering
+      lens: "Pipeline reliability, feature freshness, training/serving skew."
+    - id: ml_platform
+      lens: "Serving infrastructure, monitoring, rollback capability, A/B test framework."
+    - id: domain_expert
+      lens: "Subject matter validity. Models that look good statistically can fail on domain logic."
+    - id: end_user
+      lens: "User-perceptible model behaviour. Often diverges from offline metrics."
+    - id: compliance_ai
+      lens: "AI Act tiering, FTC guidance, sector regulations, model card requirements."
+    - id: ethics_review
+      lens: "Bias, fairness, harm potential, vulnerable populations."
+    - id: legal_counsel
+      lens: "Training data provenance, IP risk, output liability, terms-of-service."
+    - id: security_team
+      lens: "Prompt injection, model exfiltration, training data poisoning, adversarial inputs."
+  optional:
+    - id: works_council
+      lens: "Required in EU when model affects employee evaluation or scheduling."
+      include_if: "Model output influences HR or workforce decisions in EU jurisdictions."
+    - id: external_auditor
+      lens: "Independent eval before high-stakes deployment."
+      include_if: "Healthcare, finance, employment, or other high-stakes domain."
+
+methodology_focus:
+  emphasise:
+    - model_card_documentation
+    - eval_harness_with_holdout_sets
+    - drift_detection_and_monitoring
+    - ab_test_framework_for_models
+    - data_provenance_tracking
+    - red_team_evaluation
+  deprioritise:
+    - feature_flag_billing_patterns
+    - hardware_supply_chain
+    - traditional_state_machine_methods
+
+contradiction_emphasis:
+  now:
+    - "Training data licensing vs. intended commercial use"
+    - "Eval methodology vs. real-world deployment conditions (offline-online gap)"
+    - "Latency budget vs. model size at target accuracy"
+    - "Privacy constraints vs. data needed for fairness evaluation"
+  mid:
+    - "Drift detection threshold vs. retraining cost"
+    - "Model versioning across customer cohorts on different versions"
+    - "Cost per inference at projected scale"
+  long:
+    - "AI Act high-risk classification triggers"
+    - "Training data legal landscape evolution (EU AI Act, copyright cases)"
+    - "Model obsolescence as foundation models improve"
+    - "Vendor lock-in on training infrastructure"
+
+default_mode_recommendation: plan
+
+structure_techniques_likely_relevant:
+  - model_card_template
+  - data_lineage_diagram
+  - decision_table_for_high_stakes_outputs
+  - architecture_decision_records_for_eval_methodology
+  - failure_mode_and_effects_analysis
+
+source_quality_filters:
+  prefer:
+    - peer_reviewed_papers
+    - mlops_post_mortems
+    - foundational_model_provider_docs
+    - regulatory_guidance_documents
+  avoid:
+    - vendor_marketing_for_ml_platforms
+    - hype_pieces_about_capabilities
+    - benchmark_marketing_without_methodology

@@ -1,0 +1,92 @@
+# Compliance-Heavy Adaptor
+#
+# For pre-execution research on projects in regulated sectors (healthcare, finance,
+# critical infrastructure, public sector) or where multiple compliance regimes intersect.
+
+adaptor:
+  id: compliance-heavy
+  name: Compliance-Heavy Project
+  description: Healthcare, finance, public sector, critical infrastructure, or any project where multiple regulatory regimes intersect and audit trail dominates design.
+
+stakeholders:
+  default:
+    - id: compliance_officer
+      lens: "Internal compliance program, control framework mapping, evidence generation."
+    - id: legal_counsel
+      lens: "Contract risk, regulatory exposure, breach notification obligations."
+    - id: dpo_privacy_officer
+      lens: "GDPR, sector-specific privacy laws, data minimisation, retention, subject rights."
+    - id: external_auditor
+      lens: "What evidence will be requested, how the system supports examination."
+    - id: regulator
+      lens: "Sector-specific authority. Has formal oversight powers."
+    - id: security_team
+      lens: "Audit trail integrity, access controls, incident response, forensic readiness."
+    - id: risk_management
+      lens: "Enterprise risk register, residual risk tolerance, board reporting."
+    - id: end_user
+      lens: "Subject of the regulation (patient, customer, citizen). Rights and protections."
+    - id: support_team
+      lens: "Subject access requests, deletion requests, incident notifications."
+  optional:
+    - id: works_council
+      lens: "Required in EU when system monitors employees or affects working conditions."
+      include_if: "System processes employee data or affects work organisation in EU."
+    - id: ethics_board
+      lens: "Independent review for high-stakes decisions affecting individuals."
+      include_if: "Healthcare, criminal justice, employment, or other high-stakes domain."
+
+methodology_focus:
+  emphasise:
+    - control_framework_mapping
+    - audit_trail_design
+    - data_lineage_tracking
+    - access_control_models
+    - incident_response_playbooks
+    - retention_and_deletion_policies
+    - evidence_generation_automation
+    - segregation_of_duties
+  deprioritise:
+    - rapid_iteration_workflows
+    - lightweight_documentation_practices
+    - move_fast_break_things
+
+contradiction_emphasis:
+  now:
+    - "Audit trail requirements vs. performance budget"
+    - "Data minimisation vs. ML training needs"
+    - "Encryption-at-rest vs. legitimate query access"
+    - "Right-to-deletion vs. immutable audit log"
+    - "Segregation of duties vs. small-team operations"
+  mid:
+    - "Control framework drift as company grows (SOC2 → ISO27001 → sector frameworks)"
+    - "Cross-border data transfer regimes (Schrems III risk)"
+    - "Retention obligation conflicts (must-keep vs. must-delete laws)"
+    - "Vendor sub-processor cascade and audit reach"
+  long:
+    - "Regulatory evolution (AI Act phases, DSA, EHDS, FedRAMP changes)"
+    - "Quantum-readiness of cryptographic choices"
+    - "Successor-frameworks when current ones are deprecated"
+    - "Legal harmonisation or fragmentation across jurisdictions"
+
+default_mode_recommendation: plan
+
+structure_techniques_likely_relevant:
+  - control_mapping_matrix
+  - data_flow_diagram_with_classification
+  - threat_modelling_stride_or_pasta
+  - architecture_decision_records_with_compliance_rationale
+  - retention_decision_table
+
+source_quality_filters:
+  prefer:
+    - regulatory_authority_guidance
+    - peer_reviewed_security_research
+    - control_framework_documentation_official
+    - case_law_summaries
+    - audit_findings_anonymised
+  avoid:
+    - vendor_compliance_marketing
+    - generic_grc_listicles
+    - opinion_pieces_without_legal_grounding
+    - paywalled_analyst_reports_without_excerpt

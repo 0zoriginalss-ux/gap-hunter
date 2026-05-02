@@ -1,0 +1,79 @@
+# SaaS Feature Adaptor
+#
+# For pre-execution research on a feature shipping into a multi-tenant SaaS product.
+# Pre-populates stakeholders, methodology focus, and contradiction-detection emphasis.
+
+adaptor:
+  id: saas-feature
+  name: SaaS Feature Launch
+  description: Multi-tenant feature work where customer-facing impact, billing, and tenant isolation matter.
+
+stakeholders:
+  default:
+    - id: pilot_customer
+      lens: "What they are actually trying to do, beyond what they said. Surfaces hidden constraints."
+    - id: enterprise_it
+      lens: "Procurement, SSO, SAML/OIDC, audit, vendor onboarding. Often blocks B2B deals."
+    - id: end_user
+      lens: "The person actually clicking buttons. Friction here surfaces in churn, not tickets."
+    - id: support_team
+      lens: "What they will have to explain or fix. Onboarding-heavy features burn support budget."
+    - id: sales_team
+      lens: "What is demoable, what closes, what gets asked in calls."
+    - id: finance_billing
+      lens: "Pricing model fit, metering accuracy, invoice impact, dunning behaviour."
+    - id: security_team
+      lens: "Tenant isolation, RLS, secrets handling, audit trail, incident response."
+    - id: compliance
+      lens: "GDPR, SOC2, sector-specific. Triggers vary by tier."
+  optional:
+    - id: works_council
+      lens: "Required in some jurisdictions when feature monitors or automates worker activity."
+      include_if: "Feature affects employee monitoring, scheduling, or evaluation in EU markets."
+    - id: dpo
+      lens: "Data protection officer. Required for EU customers handling personal data."
+      include_if: "Feature processes personal data of EU residents."
+
+methodology_focus:
+  emphasise:
+    - feature_flag_management
+    - progressive_rollout
+    - tenant_aware_logging
+    - billing_metering
+    - schema_migration_safety
+  deprioritise:
+    - heavyweight_event_storming
+    - formal_methods
+    - hardware_specific_patterns
+
+contradiction_emphasis:
+  now:
+    - "Tenant isolation in new feature vs. existing RLS policies"
+    - "Billing model fit (per-seat / usage / flat) for the feature's value driver"
+    - "Auth provider capability (SSO, SCIM, custom domains) for target customer tier"
+  mid:
+    - "Scaling the feature past current tenant count"
+    - "Enterprise upgrade path (audit, SSO, on-prem option)"
+    - "Pricing unit drift as the feature matures"
+  long:
+    - "Regulatory drift (AI Act phases for AI features, DSA for content features)"
+    - "Vendor lock-in for critical infrastructure dependencies"
+    - "Data export / deletion compliance as customer base diversifies"
+
+default_mode_recommendation: plan
+
+structure_techniques_likely_relevant:
+  - architecture_decision_records
+  - lightweight_ddd_for_bounded_contexts
+  - state_machine_for_feature_flag_states
+  - sequence_diagram_for_billing_flow
+
+source_quality_filters:
+  prefer:
+    - engineering_blogs_of_known_saas_companies
+    - post_mortems_with_concrete_dollar_costs
+    - incident_reports
+  avoid:
+    - vendor_marketing_pages
+    - generic_listicles
+    - paywalled_analyst_reports_without_excerpt

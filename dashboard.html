@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gap-Hunter Dashboard</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --success: #3fb950;
+    --warning: #d29922;
+    --danger: #f85149;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 20px; margin-bottom: 4px; color: var(--accent); }
+  h2 { font-size: 16px; margin: 24px 0 12px; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  h3 { font-size: 14px; margin: 12px 0 6px; color: var(--accent); }
+  .subtitle { color: var(--muted); margin-bottom: 24px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 16px; margin-bottom: 16px; }
+  .controls { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+  button {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  button:hover { opacity: 0.85; }
+  button.secondary { background: var(--border); color: var(--text); }
+  .status { font-size: 13px; color: var(--muted); }
+  .status.ok { color: var(--success); }
+  .status.warn { color: var(--warning); }
+  .status.danger { color: var(--danger); }
+  .agent-list { list-style: none; }
+  .agent-row {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .agent-row:last-child { border-bottom: none; }
+  .icon { font-family: var(--mono); }
+  .icon.done { color: var(--success); }
+  .icon.pending { color: var(--muted); }
+  .icon.running { color: var(--warning); }
+  .agent-name { font-weight: 600; }
+  .agent-meta { color: var(--muted); font-size: 12px; }
+  .findings { background: var(--bg); padding: 12px; border-left: 2px solid var(--accent); border-radius: 0 4px 4px 0; margin-top: 6px; }
+  .findings ul { list-style: none; padding-left: 0; }
+  .findings li { padding: 3px 0; color: var(--text); }
+  .findings li::before { content: "→ "; color: var(--accent); }
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 48px 24px;
+  }
+  .empty input[type="file"] { display: none; }
+  .empty label {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 768px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .stat { text-align: center; padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; }
+  .stat-value { font-size: 24px; font-weight: bold; color: var(--accent); }
+  .stat-label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--success); transition: width 0.3s; }
+  pre { white-space: pre-wrap; word-break: break-word; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<h1>Gap-Hunter Dashboard</h1>
+<div class="subtitle">Live view of brain.md and the agent chain.</div>
+
+<div id="empty-state" class="panel empty">
+  <p style="margin-bottom: 16px;">Load <code>brain.md</code> to view chain progress.</p>
+  <label for="file-input">Choose brain.md</label>
+  <input id="file-input" type="file" accept=".md" />
+  <p style="margin-top: 16px; font-size: 12px; color: var(--muted);">
+    The file is read locally in your browser. Nothing is uploaded.
+  </p>
+</div>
+
+<div id="dashboard" style="display: none;">
+  <div class="controls">
+    <button id="reload-btn" class="secondary">Reload file</button>
+    <span id="last-loaded" class="status"></span>
+    <span id="stale-indicator" class="status"></span>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top: 0;">Run summary</h2>
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-value" id="stat-completed">0</div>
+        <div class="stat-label">Agents Done</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="stat-findings">0</div>
+        <div class="stat-label">Findings</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="stat-questions">0</div>
+        <div class="stat-label">Open Questions</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="stat-stakeholder">0</div>
+        <div class="stat-label">Stakeholder Items</div>
+      </div>
+    </div>
+    <div style="margin-top: 16px;">
+      <div class="progress-bar"><div id="progress-fill" class="progress-fill" style="width: 0%;"></div></div>
+      <div class="status" id="progress-label" style="margin-top: 6px;">No agents detected</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top: 0;">Agent chain</h2>
+    <ul id="agent-list" class="agent-list"></ul>
+  </div>
+</div>
+
+<script>
+const EXPECTED_AGENTS_PLAN = [
+  "Wildcard-Breadth", "Methodology", "Orchestration", "Structure",
+  "Stakeholder-Sweep", "Contradictions", "Gap-Hunter", "Verifier", "Consolidation"
+];
+const EXPECTED_AGENTS_EXPLORE = [
+  "Wildcard-Breadth", "Stakeholder-Sweep", "Gap-Hunter", "Verifier", "Consolidation"
+];
+
+let lastFile = null;
+let lastContent = null;
+
+document.getElementById("file-input").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  lastFile = file;
+  await loadAndRender(file);
+});
+
+document.getElementById("reload-btn").addEventListener("click", async () => {
+  if (lastFile) {
+    await loadAndRender(lastFile);
+  } else {
+    document.getElementById("file-input").click();
+  }
+});
+
+async function loadAndRender(file) {
+  const content = await file.text();
+  lastContent = content;
+  const data = parseBrain(content);
+  render(data, file);
+}
+
+function parseBrain(content) {
+  const sections = [];
+  const sectionRegex = /^## Agent \d+: (.+?) \(COMPLETED ([^)]+)\)/gm;
+  let match;
+  const matches = [];
+  while ((match = sectionRegex.exec(content)) !== null) {
+    matches.push({ name: match[1].trim(), completedAt: match[2].trim(), start: match.index });
+  }
+
+  for (let i = 0; i < matches.length; i++) {
+    const m = matches[i];
+    const next = i + 1 < matches.length ? matches[i + 1].start : content.length;
+    const body = content.slice(m.start, next);
+    sections.push({
+      name: m.name,
+      completedAt: m.completedAt,
+      findings: extractList(body, "Findings"),
+      openQuestions: extractList(body, "Open Questions"),
+      stakeholderReactions: extractList(body, "Stakeholder Reactions")
+    });
+  }
+
+  return { sections };
+}
+
+function extractList(body, header) {
+  const re = new RegExp(`### ${header}([\\s\\S]*?)(?:###|$)`);
+  const m = body.match(re);
+  if (!m) return [];
+  return m[1].split("\n").map(l => l.trim()).filter(l => l.startsWith("- ")).map(l => l.slice(2));
+}
+
+function render(data, file) {
+  document.getElementById("empty-state").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+
+  const completedNames = data.sections.map(s => s.name);
+  const expected = inferExpectedAgents(completedNames);
+
+  // Stats
+  const totalFindings = data.sections.reduce((sum, s) => sum + s.findings.length, 0);
+  const totalQuestions = data.sections.reduce((sum, s) => sum + s.openQuestions.length, 0);
+  const totalStakeholder = data.sections.reduce((sum, s) => sum + s.stakeholderReactions.length, 0);
+
+  document.getElementById("stat-completed").textContent = data.sections.length;
+  document.getElementById("stat-findings").textContent = totalFindings;
+  document.getElementById("stat-questions").textContent = totalQuestions;
+  document.getElementById("stat-stakeholder").textContent = totalStakeholder;
+
+  // Progress
+  const pct = expected.length === 0 ? 0 : Math.round((data.sections.length / expected.length) * 100);
+  document.getElementById("progress-fill").style.width = pct + "%";
+  document.getElementById("progress-label").textContent = `${data.sections.length} of ${expected.length} agents complete (${pct}%)`;
+
+  // Agent list
+  const list = document.getElementById("agent-list");
+  list.innerHTML = "";
+  for (const agentName of expected) {
+    const section = data.sections.find(s => s.name === agentName);
+    const li = document.createElement("li");
+    li.className = "agent-row";
+
+    const icon = document.createElement("div");
+    const name = document.createElement("div");
+    const meta = document.createElement("div");
+    name.className = "agent-name";
+    meta.className = "agent-meta";
+
+    if (section) {
+      icon.className = "icon done";
+      icon.textContent = "✓";
+      name.textContent = section.name;
+      meta.textContent = section.completedAt;
+    } else {
+      icon.className = "icon pending";
+      icon.textContent = "○";
+      name.textContent = agentName;
+      meta.textContent = "pending";
+    }
+
+    li.appendChild(icon);
+    const nameWrap = document.createElement("div");
+    nameWrap.appendChild(name);
+    if (section && section.findings.length > 0) {
+      const findings = document.createElement("div");
+      findings.className = "findings";
+      const ul = document.createElement("ul");
+      for (const f of section.findings.slice(0, 3)) {
+        const fli = document.createElement("li");
+        fli.textContent = f;
+        ul.appendChild(fli);
+      }
+      findings.appendChild(ul);
+      nameWrap.appendChild(findings);
+    }
+    li.appendChild(nameWrap);
+    li.appendChild(meta);
+    list.appendChild(li);
+  }
+
+  // Last loaded + staleness
+  const now = new Date();
+  document.getElementById("last-loaded").textContent = `Loaded: ${file.name} at ${now.toLocaleTimeString()}`;
+  if (file.lastModified) {
+    const ageMin = Math.floor((Date.now() - file.lastModified) / 60000);
+    const stale = document.getElementById("stale-indicator");
+    if (ageMin > 30) {
+      stale.textContent = `WARNING: file last modified ${ageMin} minutes ago — agent may be stuck`;
+      stale.className = "status warn";
+    } else {
+      stale.textContent = `File modified ${ageMin} minutes ago`;
+      stale.className = "status ok";
+    }
+  }
+}
+
+function inferExpectedAgents(completedNames) {
+  // If we see the broad-phase agents (Methodology / Orchestration / Structure), it's plan mode
+  const planSignals = ["Methodology", "Orchestration", "Structure", "Contradictions"];
+  const hasPlanSignal = completedNames.some(n => planSignals.includes(n));
+  if (hasPlanSignal) return EXPECTED_AGENTS_PLAN;
+  if (completedNames.length === 0) return EXPECTED_AGENTS_PLAN;
+  return EXPECTED_AGENTS_EXPLORE;
+}
+</script>
+</body>
+</html>

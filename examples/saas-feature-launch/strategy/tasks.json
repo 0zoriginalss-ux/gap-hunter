@@ -1,0 +1,114 @@
+[
+  {
+    "id": "GH-001",
+    "title": "Implement per-workspace flat pricing for dashboards feature",
+    "priority": "must",
+    "source_recommendation": "Integration Catalogue Section 5, Must-1",
+    "dependencies": ["GH-003"],
+    "estimated_effort": "M",
+    "owner_slot": "billing-engineering",
+    "adoption_filter": {
+      "invariants_check": "pass",
+      "slot_fit": "existing workspace billing infrastructure",
+      "pilot_runnable": true
+    },
+    "linked_risks": ["RISK-002"],
+    "wave_briefing_path": "strategy/wave-briefings/GH-001-per-workspace-pricing.md"
+  },
+  {
+    "id": "GH-002",
+    "title": "Document hybrid pricing escalation framework for January 2027 review",
+    "priority": "must",
+    "source_recommendation": "Integration Catalogue Section 5, Must-2",
+    "dependencies": ["GH-001"],
+    "estimated_effort": "S",
+    "owner_slot": "pricing-committee",
+    "adoption_filter": {
+      "invariants_check": "pass",
+      "slot_fit": "pricing committee documentation slot",
+      "pilot_runnable": false
+    },
+    "linked_risks": ["RISK-003"],
+    "wave_briefing_path": "strategy/wave-briefings/GH-002-hybrid-framework.md"
+  },
+  {
+    "id": "GH-003",
+    "title": "Resolve CEO definition of 'value-aligned pricing' or document deferral",
+    "priority": "must",
+    "source_recommendation": "Integration Catalogue Section 5, Must-3",
+    "dependencies": [],
+    "estimated_effort": "S",
+    "owner_slot": "engineering-lead",
+    "adoption_filter": {
+      "invariants_check": "pass",
+      "slot_fit": "executive-decision-record slot",
+      "pilot_runnable": false
+    },
+    "linked_risks": ["RISK-001"],
+    "wave_briefing_path": "strategy/wave-briefings/GH-003-ceo-conversation.md"
+  },
+  {
+    "id": "GH-004",
+    "title": "Conduct WTP interviews with 3 design-partner customers",
+    "priority": "should",
+    "source_recommendation": "Integration Catalogue Section 5, Should-1",
+    "dependencies": [],
+    "estimated_effort": "M",
+    "owner_slot": "customer-success",
+    "adoption_filter": {
+      "invariants_check": "pass",
+      "slot_fit": "existing customer-research process",
+      "pilot_runnable": true
+    },
+    "linked_risks": ["RISK-004"],
+    "wave_briefing_path": null
+  },
+  {
+    "id": "GH-005",
+    "title": "Audit 12 enterprise contracts for pricing-stability and MFC clauses",
+    "priority": "should",
+    "source_recommendation": "Integration Catalogue Section 5, Should-2",
+    "dependencies": [],
+    "estimated_effort": "S",
+    "owner_slot": "legal-counsel",
+    "adoption_filter": {
+      "invariants_check": "pass",
+      "slot_fit": "contract review process",
+      "pilot_runnable": false
+    },
+    "linked_risks": ["RISK-005"],
+    "wave_briefing_path": null
+  },
+  {
+    "id": "GH-006",
+    "title": "Build customer-success comms template for pricing communication",
+    "priority": "should",
+    "source_recommendation": "Integration Catalogue Section 5, Should-3",
+    "dependencies": ["GH-001"],
+    "estimated_effort": "S",
+    "owner_slot": "customer-success",
+    "adoption_filter": {
+      "invariants_check": "pass",
+      "slot_fit": "existing comms-template library",
+      "pilot_runnable": true
+    },
+    "linked_risks": [],
+    "wave_briefing_path": null
+  },
+  {
+    "id": "GH-007",
+    "title": "Map specific competitor pricing for two named competitors in buyer ICP",
+    "priority": "should",
+    "source_recommendation": "Integration Catalogue Section 5, Should-4",
+    "dependencies": [],
+    "estimated_effort": "S",
+    "owner_slot": "product-marketing",
+    "adoption_filter": {
+      "invariants_check": "pass",
+      "slot_fit": "competitive-intel process",
+      "pilot_runnable": false
+    },
+    "linked_risks": [],
+    "wave_briefing_path": null
+  }
+]

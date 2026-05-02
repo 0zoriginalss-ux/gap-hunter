@@ -1,0 +1,86 @@
+# Hardware Adaptor
+#
+# For pre-execution research on hardware projects — embedded, IoT, consumer electronics,
+# robotics. Emphasises supply chain, certification, manufacturing constraints.
+
+adaptor:
+  id: hardware
+  name: Hardware Project
+  description: Embedded, IoT, robotics, or consumer hardware where supply chain, certification, manufacturing, and field-update reality dominate.
+
+stakeholders:
+  default:
+    - id: hardware_engineering
+      lens: "Component selection, BOM cost, manufacturability, thermal/EMI/power constraints."
+    - id: firmware_team
+      lens: "OTA update reliability, recovery from failed updates, security boundary."
+    - id: supply_chain
+      lens: "Lead times, single-source risk, allocation in shortages, geopolitical exposure."
+    - id: manufacturing_partner
+      lens: "DFM (design for manufacturing), test fixtures, yield, RMA workflow."
+    - id: certification_body
+      lens: "FCC, CE, UL, RED, sector-specific (medical, automotive). Each has gates and lead times."
+    - id: end_user
+      lens: "Out-of-box experience, troubleshooting in the field, repair/replace economics."
+    - id: support_team
+      lens: "RMA volume, diagnostic tooling, field-replaceable units, return shipping logistics."
+    - id: legal_counsel
+      lens: "Product liability, warranty, end-of-life obligations, recall procedures."
+    - id: security_team
+      lens: "Hardware security module, secure boot, key management, side-channel resistance."
+  optional:
+    - id: regulator
+      lens: "Sector-specific oversight (medical device authority, automotive safety body)."
+      include_if: "Domain triggers regulatory oversight (medical, automotive, aviation, energy)."
+    - id: environmental_compliance
+      lens: "RoHS, WEEE, conflict minerals, battery directive."
+      include_if: "Selling into EU or jurisdictions with environmental hardware regulation."
+
+methodology_focus:
+  emphasise:
+    - hardware_software_co_design
+    - failure_mode_and_effects_analysis
+    - design_for_manufacturing
+    - reliability_engineering_mtbf
+    - secure_boot_and_attestation
+    - ota_update_safety
+  deprioritise:
+    - traditional_web_devops_patterns
+    - feature_flag_systems_for_hardware_features
+    - rapid_iteration_workflows
+
+contradiction_emphasis:
+  now:
+    - "Component availability vs. design assumptions (single-source risk)"
+    - "Certification timeline vs. ship date"
+    - "BOM cost target vs. capability requirements"
+    - "Power budget vs. feature set"
+  mid:
+    - "OTA update strategy vs. installed-base diversity"
+    - "Component obsolescence schedule (end-of-life parts)"
+    - "Manufacturing partner consolidation risk"
+  long:
+    - "Right-to-repair regulatory drift (EU, US states)"
+    - "Environmental compliance evolution (battery directive, repair index)"
+    - "Geopolitical exposure of supply chain"
+    - "Product end-of-life support obligations"
+
+default_mode_recommendation: plan
+
+structure_techniques_likely_relevant:
+  - failure_mode_and_effects_analysis
+  - state_machine_for_device_states
+  - architecture_decision_records_for_component_choices
+  - sequence_diagram_for_ota_flow
+  - reliability_block_diagram
+
+source_quality_filters:
+  prefer:
+    - hardware_post_mortems_with_recall_data
+    - certification_authority_guidance
+    - supply_chain_industry_reports
+    - peer_reviewed_reliability_research
+  avoid:
+    - component_vendor_marketing
+    - generic_iot_predictions
+    - recall_news_without_technical_detail
