@@ -1,5 +1,5 @@
 ---
-description: Run the full plan-mode chain (8 agents + verifier + consolidation, with bounded emergent spawning).
+description: Full overnight research before you commit to build. 8-agent chain plus verifier and consolidation.
 argument-hint: [project-name]
 ---
 
@@ -14,7 +14,7 @@ Total runtime: ~4-6 hours. Designed for overnight execution.
 ## Pre-flight (mandatory — these are not optional)
 
 1. **Smoke test recommended.** Before launching the full run, recommend the user runs the smoke test (5-minute dry-run that confirms terminal, paths, permissions). Skip only if user explicitly confirms setup is verified.
-2. **Triage report recommended.** If no recent `triage-report.md` exists, recommend running `/gap-hunt-triage` first. Allow override.
+2. **Triage report recommended.** If no recent `triage-report.md` exists, recommend running `/gap-hunter:scan` first. Allow override.
 3. **`_shared-context.md` required.** Refuse if missing. Offer skeleton generation.
 4. **Adaptor selected.** Confirm which adaptor (`saas-feature` / `ml-model` / `hardware` / `compliance-heavy` / `generic`) — load from `adaptors/<id>.yaml`.
 5. **Project architecture document referenced** for the Contradictions agent. If missing, surface as a warning but allow proceeding (the agent will operate on `_shared-context.md` alone with reduced quality).

@@ -1,5 +1,5 @@
 ---
-description: Fast diagnostic — should you run the Gap-Hunter pattern, and which mode fits?
+description: Quick check — should you run the Gap-Hunter pattern at all, and which mode fits?
 argument-hint: [project-name]
 ---
 
@@ -39,7 +39,7 @@ When the Triage agent returns:
 2. Surface the recommendation prominently to the user:
    - If `do-not-run` → present the recommended alternative path and stop
    - If `plan` / `explore` / `validate` → ask the user whether to proceed with that mode now, defer, or override
-3. If proceeding, route to the appropriate `/gap-hunt-<mode>` command, passing the triage report as a hint
+3. If proceeding, route to the appropriate command — `/gap-hunter:explore`, `/gap-hunter:research`, or `/gap-hunter:verify` — passing the triage report as a hint
 
 ## Anti-patterns to avoid
 

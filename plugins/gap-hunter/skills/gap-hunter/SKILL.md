@@ -27,17 +27,18 @@ Recognise these signals in the conversation:
 
 ## How to invoke
 
-The pattern has four modes. **Always recommend `triage` first for new users** — it is honest about whether the pattern actually fits their situation:
+The pattern has six commands. **Always recommend `/gap-hunter:scan` first for new users** — it is honest about whether the pattern actually fits their situation:
 
-- `/gap-hunt triage` — Fast diagnostic (~10 min). Decides whether to run the pattern at all.
-- `/gap-hunt explore` — Reduced 3-agent chain for early-stage scope mapping (~1-2h).
-- `/gap-hunt plan` — Full 8-agent chain for pre-execution research (~4-6h, overnight).
-- `/gap-hunt validate` — Post-wave hardening chain (~2-3h).
-- `/gap-hunt resume` — Resume an interrupted run.
+- `/gap-hunter:scan` — Quick check (~10 min). Decides whether to run the pattern at all.
+- `/gap-hunter:explore` — Map the landscape when scope isn't fixed yet (~1-2h).
+- `/gap-hunter:research` — Full overnight research before you commit to build (~4-6h, overnight).
+- `/gap-hunter:verify` — Reality-check after shipping one wave (~2-3h).
+- `/gap-hunter:resume` — Continue an interrupted run.
+- `/gap-hunter:go` — Auto-pick the right mode for the situation.
 
 ## Required preparation
 
-Before running anything except `triage`, confirm the user has prepared:
+Before running anything except `scan`, confirm the user has prepared:
 
 1. `_shared-context.md` — project context, invariants, current phase, key constraints
 2. A clear brief — what question or initiative is being researched

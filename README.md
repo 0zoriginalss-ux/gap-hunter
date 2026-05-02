@@ -121,24 +121,25 @@ The Gap-Hunter is distributed as a Claude Code plugin via this repository's mark
 **3. From your project directory, start a research run:**
 
 ```
-/gap-hunter:gap-hunt-triage
+/gap-hunter:scan
 ```
 
-The triage step takes ~10 minutes and tells you honestly whether the full pattern fits your situation. If it does, it routes you to the right mode.
+The scan takes ~10 minutes and tells you honestly whether the full pattern fits your situation. If it does, it routes you to the right mode.
 
 ---
 
-## Four modes, one decision rule
+## Six commands, one decision rule
 
-| Mode | Slash command | Use when | Approximate runtime |
+| Command | What it does | When to use | Runtime |
 |---|---|---|---|
-| Triage | `/gap-hunter:gap-hunt-triage` | You are unsure whether to run the pattern at all | ~10 minutes |
-| Explore | `/gap-hunter:gap-hunt-explore` | Scope is not yet fixed; you need to map the landscape | ~1-2 hours |
-| Plan | `/gap-hunter:gap-hunt-plan` | Scope is clear; you are about to commit to architecture or build | ~4-6 hours (overnight) |
-| Validate | `/gap-hunter:gap-hunt-validate` | You shipped one wave; reconcile assumptions with reality before the next | ~2-3 hours |
-| Resume | `/gap-hunter:gap-hunt-resume` | An interrupted run needs to continue from the last completed agent | varies |
+| `/gap-hunter:scan` | Quick check — should you run this pattern at all? | Always start here if unsure | ~10 min |
+| `/gap-hunter:explore` | Map the landscape when scope isn't fixed | Scope is open, you don't know what you're building | ~1-2 h |
+| `/gap-hunter:research` | Full overnight research before you commit to build | Scope is locked, you're about to commit code | ~4-6 h (overnight) |
+| `/gap-hunter:verify` | Reality-check after shipping one wave | Wave 1 shipped, before next wave | ~2-3 h |
+| `/gap-hunter:resume` | Continue an interrupted run | Last run was killed by rate-limit / network / context-compaction | varies |
+| `/gap-hunter:go` | Auto-pick the right mode for you | You want the dispatcher to decide | varies |
 
-**Always start with triage** if you are not sure. The triage agent is allowed (and encouraged) to recommend NOT running the pattern when a simpler path fits.
+**Always start with `scan`** if you're not sure. The scan is allowed (and encouraged) to recommend NOT running the pattern when a simpler path fits.
 
 ---
 
@@ -216,7 +217,7 @@ For overnight runs, the watchdog scripts in `plugins/gap-hunter/scripts/` (Bash 
 Runs can be interrupted by rate limits, network failures, or context compaction. State persists in `.gap-hunter/state.json` and the orchestrator plan in `.gap-hunter/plan.md`. Resume from the last completed agent:
 
 ```
-/gap-hunter:gap-hunt-resume
+/gap-hunter:resume
 ```
 
 ---

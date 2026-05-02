@@ -2,7 +2,7 @@
 # Gap-Hunter Resume Helper
 #
 # Inspects .gap-hunter/state.json and reports what would be resumed.
-# The actual resume is orchestrated by the /gap-hunt-resume slash command;
+# The actual resume is orchestrated by the /gap-hunter:resume slash command;
 # this script provides a quick state inspection for the user.
 #
 # Usage:
@@ -85,7 +85,7 @@ if command -v jq >/dev/null 2>&1; then
   echo ""
   echo "To resume the run:"
   echo "  claude --model opus --dangerously-skip-permissions"
-  echo "  > /gap-hunt resume"
+  echo "  > /gap-hunter:resume"
 else
   echo "jq not installed - showing raw state:"
   cat "$STATE_FILE"

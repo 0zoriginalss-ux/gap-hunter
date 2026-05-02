@@ -1,7 +1,7 @@
 # Gap-Hunter Resume Helper (PowerShell)
 #
 # Inspects .gap-hunter/state.json and reports what would be resumed.
-# The actual resume is orchestrated by the /gap-hunt-resume slash command;
+# The actual resume is orchestrated by the /gap-hunter:resume slash command;
 # this script provides a quick state inspection for the user.
 
 param(
@@ -66,4 +66,4 @@ if ($Validate) {
 Write-Host ""
 Write-Host "To resume the run:"
 Write-Host "  claude --model opus --dangerously-skip-permissions"
-Write-Host "  > /gap-hunt resume"
+Write-Host "  > /gap-hunter:resume"

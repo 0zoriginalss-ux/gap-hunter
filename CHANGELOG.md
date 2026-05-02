@@ -6,6 +6,29 @@ This project follows [Semantic Versioning](https://semver.org/). Pattern version
 
 ---
 
+## [1.0.2] — 2026-05-03
+
+Patch release renaming the slash commands for clarity. Behaviour is unchanged.
+
+### Changed
+- **Command names simplified.** Each command now describes its function directly, no `gap-hunt-` prefix:
+
+  | Old | New |
+  |---|---|
+  | `/gap-hunter:gap-hunt-triage` | `/gap-hunter:scan` |
+  | `/gap-hunter:gap-hunt-explore` | `/gap-hunter:explore` |
+  | `/gap-hunter:gap-hunt-plan` | `/gap-hunter:research` |
+  | `/gap-hunter:gap-hunt-validate` | `/gap-hunter:verify` |
+  | `/gap-hunter:gap-hunt-resume` | `/gap-hunter:resume` |
+  | `/gap-hunter:gap-hunt` | `/gap-hunter:go` |
+
+- Command file descriptions rewritten to be one-line direct ("Quick check — should you run this pattern at all?" instead of "Fast diagnostic"). Autocomplete now tells you what each command does at a glance.
+- README slash-command table, SKILL.md slash-command list, scripts (`init.sh`/`init.ps1`/`resume.sh`/`resume.ps1`/`post-process.sh`/`post-process.ps1`), and internal cross-references in command files updated to the new names.
+
+State files written by older versions (`mode: triage` / `plan` / `validate`) remain readable — only the user-facing command names changed.
+
+---
+
 ## [1.0.1] — 2026-05-02
 
 Patch release surfacing three bugs caught during pre-public test runs (T1–T2). All were silent failures with substantive impact, hence patched before public visibility.

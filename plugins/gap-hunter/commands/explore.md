@@ -1,5 +1,5 @@
 ---
-description: Run the reduced explore-mode chain (3 agents) for early-stage scope mapping.
+description: Map the landscape when scope isn't fixed yet. Reduced 3-agent chain.
 argument-hint: [project-name]
 ---
 
@@ -14,7 +14,7 @@ This mode is for situations where scope is not yet fixed. It maps the landscape 
 ## Pre-flight (mandatory)
 
 1. Confirm `_shared-context.md` exists. If not, refuse and ask the user to write one (offer skeleton).
-2. Recommend the user runs `/gap-hunt-triage` first if they have not. Allow override.
+2. Recommend the user runs `/gap-hunter:scan` first if they have not. Allow override.
 3. Create or confirm `round-N/` output directory.
 4. Confirm no other Claude Code session is running in this project.
 5. Initialise `brain.md` with the project header if it does not exist.
@@ -48,6 +48,6 @@ Surface the integration-catalog.md path to the user.
 
 ## Anti-patterns to avoid
 
-- Do not run all three breadth agents (Methodology, Orchestration, Structure) — that is `plan` mode, not `explore`.
+- Do not run all three breadth agents (Methodology, Orchestration, Structure) — that is `research` mode, not `explore`.
 - Do not skip the Verifier even if the Gap-Hunter found few gaps. The verifier confirms the few it found.
 - Do not produce execution-ready briefings in explore mode. The catalogue is landscape-focused.

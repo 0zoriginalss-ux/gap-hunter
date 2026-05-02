@@ -146,7 +146,7 @@ if ($Errors -gt 0) {
     Write-Host ""
     Write-Host "If artefacts are missing, the Consolidation agent did not complete fully."
     Write-Host "Re-run consolidation:"
-    Write-Host "  > /gap-hunt resume"
+    Write-Host "  > /gap-hunter:resume"
     exit 1
 }
 

@@ -1,5 +1,5 @@
 ---
-description: Run the validate-mode chain after a completed execution wave to reconcile research assumptions with reality.
+description: Reality-check after shipping one wave. Reconciles research assumptions with what actually happened.
 argument-hint: [project-name]
 ---
 

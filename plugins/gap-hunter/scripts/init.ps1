@@ -52,7 +52,7 @@ Write-Host @"
   Estimated time: 3-5 minutes.
 
   Tip: if you are unsure whether to run the pattern at all,
-  start with /gap-hunt triage instead - it will tell you honestly.
+  start with /gap-hunter:scan instead - it will tell you honestly.
 
 "@
 
@@ -101,10 +101,10 @@ if (-not (Test-Path $AdaptorFile)) {
 
 Write-Host ""
 $ModeFull = Choose-Option "Which mode do you intend to run?" @(
-    "triage (recommended for new users - decides if you should run at all)",
-    "explore (pre-scope, ~1-2h)",
-    "plan (pre-execution, ~4-6h overnight)",
-    "validate (post-wave hardening, requires prior plan run)"
+    "scan (recommended for new users - decides if you should run at all)",
+    "explore (scope is open, ~1-2h)",
+    "research (pre-execution full chain, ~4-6h overnight)",
+    "verify (post-wave reality check, requires prior research run)"
 )
 $Mode = ($ModeFull -split " ")[0]
 
@@ -245,7 +245,7 @@ You are the orchestrator for a Gap-Hunter pattern run in **$Mode** mode.
 
 ## Chain for $Mode mode
 
-(The slash command ``/gap-hunt-$Mode`` will execute this. Defer to that command.)
+(The slash command ``/gap-hunter:$Mode`` will execute this. Defer to that command.)
 
 ## Persistence rules
 
@@ -285,7 +285,7 @@ Write-Host @"
   3. Launch the run:
 
      claude --model opus --dangerously-skip-permissions
-     > /gap-hunt $Mode
+     > /gap-hunter:$Mode
 
   4. (Optional, recommended for overnight runs) Launch the watchdog in a separate terminal:
 

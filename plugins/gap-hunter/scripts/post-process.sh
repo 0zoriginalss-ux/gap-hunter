@@ -166,7 +166,7 @@ if (( ERRORS > 0 )); then
   echo ""
   echo "If artefacts are missing, the Consolidation agent did not complete fully."
   echo "Re-run consolidation:"
-  echo "  > /gap-hunt resume"
+  echo "  > /gap-hunter:resume"
   exit 1
 fi
 

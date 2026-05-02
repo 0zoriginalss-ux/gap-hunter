@@ -1,5 +1,5 @@
 ---
-description: Resume an interrupted Gap-Hunter run from the last completed agent.
+description: Continue an interrupted run from the last completed agent.
 argument-hint: [project-name]
 ---
 
