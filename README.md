@@ -264,9 +264,24 @@ The pattern's design discipline stays the same as well — additive, opt-in, loc
 
 ## Status
 
-v1.0. Stable architecture, opinionated. Contributions welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+**v1.0.1.** Stable architecture, opinionated. Patch release fixing three bugs surfaced during pre-public validation runs — see [`CHANGELOG.md`](CHANGELOG.md). Contributions welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-The pattern is deliberately small and stays small. The goal is not feature breadth; it is consistent, defensible pre-execution research that lands operationally.
+### What is validated end-to-end
+
+| Mode | Adaptor | User state | Verified |
+|---|---|---|---|
+| Triage — `do-not-run` recommendation path | n/a | First-time | yes |
+| Explore — full chain | `saas-feature` | First-time | yes |
+| Explore — full chain | `ml-model` | Returning (existing `_shared-context.md` + `brain.md`) | yes |
+| Plan — Triage recommendation, not full chain | `compliance-heavy` | First-time | yes |
+
+### What is not yet exercised in a real run
+
+- **Plan-mode end-to-end chain** (8 research agents + Verifier + Consolidation). Structurally identical to the validated Explore chain plus four additional research agents and the ADR output path; further verification will land based on early-user feedback rather than synthetic tests.
+- **Validate-mode chain** (post-wave hardening with `-v2` delta document).
+- **`hardware` and `generic` adaptors** in actual chain runs — their YAML definitions are reviewed but have not yet been exercised by a research run.
+
+The pattern is deliberately small and stays small. The goal is not feature breadth; it is consistent, defensible pre-execution research that lands operationally. If you exercise an unverified path and hit a bug, please open an issue with the `triage-report.md` and (if available) the `verifier-OUTPUT.json` attached.
 
 ---
 
