@@ -104,20 +104,24 @@ A canonical example with all artefacts populated lives at [`examples/saas-featur
 
 ## Quick start
 
-```bash
-# 1. Clone into your Claude Code plugin directory
-git clone https://github.com/0zoriginalss-ux/gap-hunter ~/.claude/plugins/gap-hunter
+The Gap-Hunter is distributed as a Claude Code plugin via this repository's marketplace.
 
-# 2. From your project directory, run interactive setup (3-5 minutes)
-~/.claude/plugins/gap-hunter/scripts/init.sh        # macOS / Linux
-~\.claude\plugins\gap-hunter\scripts\init.ps1       # Windows
+**1. Register the marketplace** (one-time, in any Claude Code session):
 
-# 3. Optional but strongly recommended: run the smoke test
-~/.claude/plugins/gap-hunter/scripts/smoke-test.sh
+```
+/plugin marketplace add 0zoriginalss-ux/gap-hunter
+```
 
-# 4. Launch
-claude --model opus --dangerously-skip-permissions
-> /gap-hunt triage
+**2. Install the plugin** (one-time):
+
+```
+/plugin install gap-hunter@gap-hunter
+```
+
+**3. From your project directory, start a research run:**
+
+```
+/gap-hunter:gap-hunt-triage
 ```
 
 The triage step takes ~10 minutes and tells you honestly whether the full pattern fits your situation. If it does, it routes you to the right mode.
@@ -126,14 +130,15 @@ The triage step takes ~10 minutes and tells you honestly whether the full patter
 
 ## Four modes, one decision rule
 
-| Mode | Use when | Approximate runtime |
-|---|---|---|
-| `triage` | You are unsure whether to run the pattern at all | ~10 minutes |
-| `explore` | Scope is not yet fixed; you need to map the landscape | ~1-2 hours |
-| `plan` | Scope is clear; you are about to commit to architecture or build | ~4-6 hours (overnight) |
-| `validate` | You shipped one wave; reconcile assumptions with reality before the next | ~2-3 hours |
+| Mode | Slash command | Use when | Approximate runtime |
+|---|---|---|---|
+| Triage | `/gap-hunter:gap-hunt-triage` | You are unsure whether to run the pattern at all | ~10 minutes |
+| Explore | `/gap-hunter:gap-hunt-explore` | Scope is not yet fixed; you need to map the landscape | ~1-2 hours |
+| Plan | `/gap-hunter:gap-hunt-plan` | Scope is clear; you are about to commit to architecture or build | ~4-6 hours (overnight) |
+| Validate | `/gap-hunter:gap-hunt-validate` | You shipped one wave; reconcile assumptions with reality before the next | ~2-3 hours |
+| Resume | `/gap-hunter:gap-hunt-resume` | An interrupted run needs to continue from the last completed agent | varies |
 
-**Always start with `triage`** if you are not sure. The triage agent is allowed (and encouraged) to recommend NOT running the pattern when a simpler path fits.
+**Always start with triage** if you are not sure. The triage agent is allowed (and encouraged) to recommend NOT running the pattern when a simpler path fits.
 
 ---
 
@@ -162,7 +167,7 @@ The pattern uses Claude Opus and Claude Sonnet through your existing Claude Code
 
 The honest answer to "what does a full plan run cost?" depends on your subscription tier, the verbosity of your shared-context, and how many emergent agents the Gap-Hunter spawns. Plan runs are designed for overnight batches because that is the regime where the cost is justified by the decision being made.
 
-For Claude Pro/Max users on a 7-day rolling window, a full plan run consumes a meaningful fraction of the window — see [`docs/pattern.md`](docs/pattern.md#bounded-recursion-guard-rails) for the rate-limit fallback strategy.
+For Claude Pro/Max users on a 7-day rolling window, a full plan run consumes a meaningful fraction of the window — see [`docs/pattern.md`](docs/pattern.md) for the rate-limit fallback strategy.
 
 ---
 
@@ -170,7 +175,7 @@ For Claude Pro/Max users on a 7-day rolling window, a full plan run consumes a m
 
 Everything runs locally. The pattern reads files from your project directory and writes outputs back. `brain.md`, the agent outputs, the integration catalogue, and all derived artefacts stay on your machine. No telemetry. No uploaded data. The Verifier's quality signal is a local file. The optional dashboard parses `brain.md` in your browser without a server.
 
-If you operate in a compliance-heavy domain, the pattern was designed with this in mind — see the [`compliance-heavy` adaptor](adaptors/compliance-heavy.yaml).
+If you operate in a compliance-heavy domain, the pattern was designed with this in mind — see the [`compliance-heavy` adaptor](plugins/gap-hunter/adaptors/compliance-heavy.yaml).
 
 ---
 
@@ -180,11 +185,11 @@ The pattern adapts to your domain through one of five adaptors. Each pre-populat
 
 | Adaptor | For projects that |
 |---|---|
-| [`saas-feature`](adaptors/saas-feature.yaml) | Ship into multi-tenant SaaS with billing and tenant isolation |
-| [`ml-model`](adaptors/ml-model.yaml) | Train, deploy, or significantly retrain ML models |
-| [`hardware`](adaptors/hardware.yaml) | Build embedded, IoT, robotics, or consumer hardware |
-| [`compliance-heavy`](adaptors/compliance-heavy.yaml) | Operate in healthcare, finance, public sector, regulated industry |
-| [`generic`](adaptors/generic.yaml) | Mix domains or fall outside the above |
+| [`saas-feature`](plugins/gap-hunter/adaptors/saas-feature.yaml) | Ship into multi-tenant SaaS with billing and tenant isolation |
+| [`ml-model`](plugins/gap-hunter/adaptors/ml-model.yaml) | Train, deploy, or significantly retrain ML models |
+| [`hardware`](plugins/gap-hunter/adaptors/hardware.yaml) | Build embedded, IoT, robotics, or consumer hardware |
+| [`compliance-heavy`](plugins/gap-hunter/adaptors/compliance-heavy.yaml) | Operate in healthcare, finance, public sector, regulated industry |
+| [`generic`](plugins/gap-hunter/adaptors/generic.yaml) | Mix domains or fall outside the above |
 
 Writing your own adaptor takes ~30 minutes — see [`docs/adaptors.md`](docs/adaptors.md).
 
@@ -200,9 +205,9 @@ Read it top-to-bottom to understand what the pattern delivers. The catalogue is 
 
 ## Live observability
 
-During a run, open [`dashboard.html`](dashboard.html) in your browser and load `brain.md`. You see agent progress, findings as they accumulate, and a stale-warning if no agent has appended in the last 30 minutes. No server, no build step.
+During a run, open `plugins/gap-hunter/dashboard.html` in your browser and load `brain.md`. You see agent progress, findings as they accumulate, and a stale-warning if no agent has appended in the last 30 minutes. No server, no build step.
 
-For overnight runs, `scripts/watchdog.sh` (or `.ps1`) runs in a separate terminal and fires a system notification on staleness. Catches the most common silent failure: an agent hangs while the orchestrator waits.
+For overnight runs, the watchdog scripts in `plugins/gap-hunter/scripts/` (Bash + PowerShell) run in a separate terminal and fire a system notification on staleness. Catches the most common silent failure: an agent hangs while the orchestrator waits.
 
 ---
 
@@ -210,8 +215,8 @@ For overnight runs, `scripts/watchdog.sh` (or `.ps1`) runs in a separate termina
 
 Runs can be interrupted by rate limits, network failures, or context compaction. State persists in `.gap-hunter/state.json` and the orchestrator plan in `.gap-hunter/plan.md`. Resume from the last completed agent:
 
-```bash
-> /gap-hunt resume
+```
+/gap-hunter:gap-hunt-resume
 ```
 
 ---
@@ -223,6 +228,29 @@ Runs can be interrupted by rate limits, network failures, or context compaction.
 - [`docs/extending.md`](docs/extending.md) — Living brain.md, Context-Hardening Chain, multi-AI integration
 - [`docs/adaptors.md`](docs/adaptors.md) — how to write your own adaptor
 - [`docs/competitive-landscape.md`](docs/competitive-landscape.md) — positioning against related tools
+
+---
+
+## Repository structure
+
+This repository is a **Claude Code plugin marketplace** containing one plugin:
+
+```
+gap-hunter/                          (marketplace root)
+├── .claude-plugin/marketplace.json  (marketplace manifest)
+├── plugins/
+│   └── gap-hunter/                  (the plugin)
+│       ├── .claude-plugin/plugin.json
+│       ├── agents/                  (10 agent briefings)
+│       ├── commands/                (6 slash commands)
+│       ├── skills/gap-hunter/SKILL.md
+│       ├── adaptors/                (5 domain adaptors)
+│       ├── scripts/                 (init, smoke-test, watchdog, resume, post-process)
+│       └── dashboard.html
+├── README.md, LICENSE, CHANGELOG.md, CONTRIBUTING.md
+├── docs/                            (pattern docs)
+└── examples/                        (canonical example run)
+```
 
 ---
 
