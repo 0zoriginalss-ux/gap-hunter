@@ -7,9 +7,6 @@
     "url": "https://github.com/0zoriginalss-ux/gap-hunter"
   },
   "homepage": "https://github.com/0zoriginalss-ux/gap-hunter",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/0zoriginalss-ux/gap-hunter"
-  },
+  "repository": "https://github.com/0zoriginalss-ux/gap-hunter",
   "license": "MIT"
 }
