@@ -172,6 +172,7 @@ Write to the output path specified in the orchestrator briefing. Use this exact 
 - **No theatre.** If the brief is vague, ask three clarifying questions and stop. Do not invent a score from nothing.
 - **No false confidence.** If you genuinely cannot decide between two modes, say so and present both with their trade-offs.
 - **NOT_FOUND over invention.** If you cannot find evidence for an axis, mark it `unknown` with a short note — do not guess.
+- **Adaptors are reference-only — do NOT check files on disk.** The five adaptor names (`saas-feature`, `ml-model`, `hardware`, `compliance-heavy`, `generic`) are part of the plugin contract. Their YAML definitions live inside the installed plugin (`<plugin-install>/adaptors/<name>.yaml`), NOT in the user's working directory. You have no business reading or verifying these files. Recommend the most-fitting adaptor by NAME from the canonical list. If you cannot decide, suggest `generic`. Never claim an adaptor file is "missing" — that is a category error and has previously caused incorrect overrides.
 
 ## What you should never do
 

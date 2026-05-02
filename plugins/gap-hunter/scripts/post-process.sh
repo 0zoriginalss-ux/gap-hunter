@@ -40,6 +40,29 @@ TASKS="$STRATEGY_DIR/tasks${SUFFIX}.json"
 RISKS="$STRATEGY_DIR/risk-register${SUFFIX}.md"
 BRIEFINGS_DIR="$STRATEGY_DIR/wave-briefings${SUFFIX}"
 
+# Mode detection: explore-mode produces DPRs (Decision-Pending-Records),
+# plan/validate-modes produce ADRs. Validation patterns must match.
+MODE="plan"
+STATE_FILE=".gap-hunter/state.json"
+if [[ -f "$STATE_FILE" ]] && command -v jq >/dev/null 2>&1; then
+  DETECTED=$(jq -r '.mode // empty' "$STATE_FILE" 2>/dev/null || true)
+  if [[ -n "$DETECTED" ]]; then
+    MODE="$DETECTED"
+  fi
+fi
+
+case "$MODE" in
+  explore)
+    DECISION_REGEX='^#+[[:space:]]+(DPR|Trunk-Decision|Decision-Pending)-'
+    DECISION_LABEL="DPR/Trunk-Decision"
+    ;;
+  *)
+    DECISION_REGEX='^#+[[:space:]]+ADR-'
+    DECISION_LABEL="ADR"
+    ;;
+esac
+RISK_REGEX='^#+[[:space:]]+RISK-'
+
 ERRORS=0
 WARNINGS=0
 
@@ -114,17 +137,19 @@ if $STRICT; then
   fi
 
   if [[ -f "$DECISIONS" ]]; then
-    ADR_COUNT=$(grep -c '^# ADR-' "$DECISIONS" || echo 0)
-    if (( ADR_COUNT == 0 )); then
-      echo "  WARNING: decisions.md contains no ADR headers (^# ADR-NNN)"
+    DECISION_COUNT=$(grep -cE "$DECISION_REGEX" "$DECISIONS" 2>/dev/null || true)
+    DECISION_COUNT="${DECISION_COUNT:-0}"
+    if (( DECISION_COUNT == 0 )); then
+      echo "  WARNING: decisions.md contains no $DECISION_LABEL headers (mode: $MODE)"
       WARNINGS=$((WARNINGS+1))
     else
-      echo "  OK: decisions.md contains $ADR_COUNT ADR(s)"
+      echo "  OK: decisions.md contains $DECISION_COUNT $DECISION_LABEL(s) (mode: $MODE)"
     fi
   fi
 
   if [[ -f "$RISKS" ]]; then
-    RISK_COUNT=$(grep -c '^### RISK-' "$RISKS" || echo 0)
+    RISK_COUNT=$(grep -cE "$RISK_REGEX" "$RISKS" 2>/dev/null || true)
+    RISK_COUNT="${RISK_COUNT:-0}"
     if (( RISK_COUNT == 0 )); then
       echo "  WARNING: risk-register.md contains no RISK- entries"
       WARNINGS=$((WARNINGS+1))

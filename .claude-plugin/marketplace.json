@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Multi-agent overnight research pattern that finds blind spots before you build them. Sequential agent chain with a dedicated meta-agent for gap-finding, plus a triage mode that knows when not to run.",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "plugins": [
     {
       "name": "gap-hunter",
       "source": "./plugins/gap-hunter",
       "description": "Pre-execution research pattern with triage mode that knows when not to run.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Gap-Hunter Pattern Contributors",
         "url": "https://github.com/0zoriginalss-ux"

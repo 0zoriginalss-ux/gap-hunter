@@ -25,6 +25,33 @@ $Tasks = Join-Path $StrategyDir "tasks$Suffix.json"
 $Risks = Join-Path $StrategyDir "risk-register$Suffix.md"
 $BriefingsDir = Join-Path $StrategyDir "wave-briefings$Suffix"
 
+# Mode detection: explore-mode produces DPRs (Decision-Pending-Records),
+# plan/validate-modes produce ADRs. Validation patterns must match.
+$Mode = "plan"
+$StateFile = ".gap-hunter\state.json"
+if (Test-Path $StateFile) {
+    try {
+        $stateJson = Get-Content $StateFile -Raw | ConvertFrom-Json
+        if ($stateJson.mode) {
+            $Mode = $stateJson.mode
+        }
+    } catch {
+        # Ignore parse errors, fall back to default
+    }
+}
+
+switch ($Mode) {
+    "explore" {
+        $DecisionRegex = '^#+\s+(DPR|Trunk-Decision|Decision-Pending)-'
+        $DecisionLabel = "DPR/Trunk-Decision"
+    }
+    default {
+        $DecisionRegex = '^#+\s+ADR-'
+        $DecisionLabel = "ADR"
+    }
+}
+$RiskRegex = '^#+\s+RISK-'
+
 $Errors = 0
 $Warnings = 0
 
@@ -92,17 +119,17 @@ if ($Strict) {
     }
 
     if (Test-Path $Decisions) {
-        $adrCount = (Select-String -Path $Decisions -Pattern '^# ADR-').Count
-        if ($adrCount -eq 0) {
-            Write-Host "  WARNING: decisions.md contains no ADR headers (^# ADR-NNN)"
+        $decisionCount = (Select-String -Path $Decisions -Pattern $DecisionRegex).Count
+        if ($decisionCount -eq 0) {
+            Write-Host "  WARNING: decisions.md contains no $DecisionLabel headers (mode: $Mode)"
             $Warnings++
         } else {
-            Write-Host "  OK: decisions.md contains $adrCount ADR(s)"
+            Write-Host "  OK: decisions.md contains $decisionCount $DecisionLabel(s) (mode: $Mode)"
         }
     }
 
     if (Test-Path $Risks) {
-        $riskCount = (Select-String -Path $Risks -Pattern '^### RISK-').Count
+        $riskCount = (Select-String -Path $Risks -Pattern $RiskRegex).Count
         if ($riskCount -eq 0) {
             Write-Host "  WARNING: risk-register.md contains no RISK- entries"
             $Warnings++

@@ -6,6 +6,17 @@ This project follows [Semantic Versioning](https://semver.org/). Pattern version
 
 ---
 
+## [1.0.1] — 2026-05-02
+
+Patch release surfacing three bugs caught during pre-public test runs (T1–T2). All were silent failures with substantive impact, hence patched before public visibility.
+
+### Fixed
+- **Triage agent: stop verifying adaptor YAML files on disk.** The agent was claiming installed adaptors (e.g. `ml-model.yaml`) were "missing" because it looked in the user's working directory instead of the plugin install path. New anti-slop rule makes the canonical adaptor list reference-only and explicitly prohibits filesystem checks. Recommended adaptor is now name-only.
+- **post-process scripts: `grep -c \|\| echo 0` produced `"0\n0"` strings**, breaking arithmetic comparisons silently. Replaced with `2>/dev/null || true` plus `${VAR:-0}` defensive fallback in both `post-process.sh` and `.ps1`.
+- **post-process scripts: mode-blind validation.** Strict-mode checks hardcoded plan-mode patterns (`^# ADR-`, `^### RISK-`), reporting "0 errors / 0 warnings" on explore-mode output even when validation was effectively skipped (explore produces DPRs/Trunk-Decisions, not ADRs). Both scripts now read `mode` from `.gap-hunter/state.json` and apply mode-appropriate regex.
+
+---
+
 ## [1.0.0] — 2026-05-02
 
 Initial public release.
