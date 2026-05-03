@@ -52,7 +52,7 @@ if [[ -f "$STATE_FILE" ]] && command -v jq >/dev/null 2>&1; then
 fi
 
 case "$MODE" in
-  explore)
+  mini|explore)
     DECISION_REGEX='^#+[[:space:]]+(DPR|Trunk-Decision|Decision-Pending)-'
     DECISION_LABEL="DPR/Trunk-Decision"
     ;;

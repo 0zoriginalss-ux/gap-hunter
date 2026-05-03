@@ -6,6 +6,44 @@ This project follows [Semantic Versioning](https://semver.org/). Pattern version
 
 ---
 
+## [1.1.0] — 2026-05-03
+
+Minor release tightening the slash-command surface so each command name maps directly to the pattern's promises. Agent behaviour is unchanged.
+
+### Final command surface (5 commands)
+
+| Command | What it does |
+|---|---|
+| `/gap-hunter:go` | The main event — full overnight research before you commit to build |
+| `/gap-hunter:honestfilter` | The honest filter — checks if the pattern fits, can recommend skipping it entirely |
+| `/gap-hunter:mini` | The mini version of `go` — reduced 3-agent chain when scope isn't fixed yet |
+| `/gap-hunter:verify` | Reality-check after shipping one wave |
+| `/gap-hunter:resume` | Continue an interrupted run |
+
+### Changed (from v1.0.2)
+
+| v1.0.2 | v1.1.0 |
+|---|---|
+| `/gap-hunter:research` | `/gap-hunter:go` |
+| `/gap-hunter:scan` | `/gap-hunter:honestfilter` |
+| `/gap-hunter:explore` | `/gap-hunter:mini` |
+| `/gap-hunter:verify` | unchanged |
+| `/gap-hunter:resume` | unchanged |
+| `/gap-hunter:go` (was a pass-through dispatcher) | removed — `go` is now the main event itself |
+
+### Why
+
+The v1.0.2 surface mixed functional descriptors (`research`, `verify`) with a meta-router (`go`). The router added zero value (`go research` is no shorter than `research`). Two of the names didn't carry the pattern's promise — `scan` reads as "look around", but the actual function is "decide whether to commit a night to this pattern" (the **honest filter**, the differentiator). `research` is generic — every research tool runs research; what makes this one distinctive is that it's the **main event** of pre-execution decision hardening.
+
+The 1.1.0 surface fixes both: `go` now BE the main event (one command, one launch), and `honestfilter` markets the pattern's most distinctive promise directly in the command name.
+
+### Notes
+
+- This rename happened within 24 hours of the v1.0 public launch. No known external users at the time of the change. Going forward, command-surface changes will require a major version bump per the policy below.
+- Scripts (`init`, `post-process`) updated for the new mode names. State files written by older versions (`triage`, `explore`, `plan`, `validate`) remain readable — `post-process` recognises both old and new mode names where the validation pattern differs.
+
+---
+
 ## [1.0.2] — 2026-05-03
 
 Patch release renaming the slash commands for clarity. Behaviour is unchanged.

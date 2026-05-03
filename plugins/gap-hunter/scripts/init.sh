@@ -59,7 +59,7 @@ cat <<'EOF'
   Estimated time: 3-5 minutes.
 
   Tip: if you are unsure whether to run the pattern at all,
-  start with /gap-hunter:scan instead — it will tell you honestly.
+  start with /gap-hunter:honestfilter instead — it will tell you honestly.
 
 EOF
 
@@ -99,10 +99,10 @@ fi
 
 echo ""
 MODE="$(choose "Which mode do you intend to run?" \
-  "scan (recommended for new users — decides if you should run at all)" \
-  "explore (scope is open, ~1-2h)" \
-  "research (pre-execution full chain, ~4-6h overnight)" \
-  "verify (post-wave reality check, requires prior research run)")"
+  "go (the main event — full pre-execution chain, ~4-6h overnight)" \
+  "honestfilter (unsure if you should run at all? this decides for you, ~10 min)" \
+  "mini (scope is open, reduced chain, ~1-2h)" \
+  "verify (post-wave reality check, requires prior go run)")"
 MODE="${MODE%% *}"
 
 # ---------- System invariants ----------

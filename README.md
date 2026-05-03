@@ -118,28 +118,33 @@ The Gap-Hunter is distributed as a Claude Code plugin via this repository's mark
 /plugin install gap-hunter@gap-hunter
 ```
 
-**3. From your project directory, start a research run:**
+**3. From your project directory, launch the main event:**
 
 ```
-/gap-hunter:scan
+/gap-hunter:go
 ```
 
-The scan takes ~10 minutes and tells you honestly whether the full pattern fits your situation. If it does, it routes you to the right mode.
+Or if you're not sure whether the pattern even fits your situation, start with the honest filter — it can recommend skipping the pattern entirely.
+
+```
+/gap-hunter:honestfilter
+```
 
 ---
 
-## Six commands, one decision rule
+## Five commands
 
 | Command | What it does | When to use | Runtime |
 |---|---|---|---|
-| `/gap-hunter:scan` | Quick check — should you run this pattern at all? | Always start here if unsure | ~10 min |
-| `/gap-hunter:explore` | Map the landscape when scope isn't fixed | Scope is open, you don't know what you're building | ~1-2 h |
-| `/gap-hunter:research` | Full overnight research before you commit to build | Scope is locked, you're about to commit code | ~4-6 h (overnight) |
+| `/gap-hunter:go` | **The main event** — full overnight research before you commit to build | Scope is locked, you're about to commit code | ~4-6 h (overnight) |
+| `/gap-hunter:honestfilter` | The honest filter — checks if the pattern fits, can recommend skipping | You're not sure if the pattern is worth running at all | ~10 min |
+| `/gap-hunter:mini` | The mini version of `go` — reduced 3-agent chain | Scope is open, you don't yet know what you're building | ~1-2 h |
 | `/gap-hunter:verify` | Reality-check after shipping one wave | Wave 1 shipped, before next wave | ~2-3 h |
 | `/gap-hunter:resume` | Continue an interrupted run | Last run was killed by rate-limit / network / context-compaction | varies |
-| `/gap-hunter:go` | Auto-pick the right mode for you | You want the dispatcher to decide | varies |
 
-**Always start with `scan`** if you're not sure. The scan is allowed (and encouraged) to recommend NOT running the pattern when a simpler path fits.
+**If you're new** and unsure whether the pattern fits, start with `/gap-hunter:honestfilter`. It is allowed (and encouraged) to recommend NOT running the pattern when a simpler path fits — that's the most distinctive thing about this repo.
+
+**If you know what you're doing** and you have an overnight to invest, just type `/gap-hunter:go` and let it run.
 
 ---
 

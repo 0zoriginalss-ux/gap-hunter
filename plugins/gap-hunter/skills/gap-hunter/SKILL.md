@@ -27,18 +27,17 @@ Recognise these signals in the conversation:
 
 ## How to invoke
 
-The pattern has six commands. **Always recommend `/gap-hunter:scan` first for new users** — it is honest about whether the pattern actually fits their situation:
+The pattern has five commands. **For new or unsure users, recommend `/gap-hunter:honestfilter` first** — it is honest about whether the pattern actually fits their situation. For users who already know they want the main event, recommend `/gap-hunter:go` directly:
 
-- `/gap-hunter:scan` — Quick check (~10 min). Decides whether to run the pattern at all.
-- `/gap-hunter:explore` — Map the landscape when scope isn't fixed yet (~1-2h).
-- `/gap-hunter:research` — Full overnight research before you commit to build (~4-6h, overnight).
+- `/gap-hunter:go` — The main event. Full overnight research before you commit to build (~4-6h, overnight).
+- `/gap-hunter:honestfilter` — The honest filter (~10 min). Decides whether to run the pattern at all.
+- `/gap-hunter:mini` — The mini version of `go`. Reduced 3-agent chain when scope is still open (~1-2h).
 - `/gap-hunter:verify` — Reality-check after shipping one wave (~2-3h).
 - `/gap-hunter:resume` — Continue an interrupted run.
-- `/gap-hunter:go` — Auto-pick the right mode for the situation.
 
 ## Required preparation
 
-Before running anything except `scan`, confirm the user has prepared:
+Before running anything except `honestfilter`, confirm the user has prepared:
 
 1. `_shared-context.md` — project context, invariants, current phase, key constraints
 2. A clear brief — what question or initiative is being researched

@@ -41,7 +41,7 @@ if (Test-Path $StateFile) {
 }
 
 switch ($Mode) {
-    "explore" {
+    { $_ -in @("mini", "explore") } {
         $DecisionRegex = '^#+\s+(DPR|Trunk-Decision|Decision-Pending)-'
         $DecisionLabel = "DPR/Trunk-Decision"
     }

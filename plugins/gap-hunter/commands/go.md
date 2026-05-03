@@ -1,46 +1,80 @@
 ---
-description: Auto-pick the right mode for your situation. Routes to scan / explore / research / verify / resume based on argument.
-argument-hint: <scan|explore|research|verify|resume> [project-name]
+description: The main event — full overnight research before you commit to build. 8-agent chain plus verifier and consolidation.
+argument-hint: [project-name]
 ---
 
-You are routing a Gap-Hunter pattern invocation. The user passed: `$ARGUMENTS`.
+You are launching the **main event** of the Gap-Hunter research pattern — the canonical, full-depth chain. This is what the pattern is famous for.
 
-## Routing logic
+## What `go` runs
 
-Parse the first token of `$ARGUMENTS`:
+The full sequential chain of eight research agents, followed by the Verifier (cross-checks Gap-Hunter output) and Consolidation (produces integration-catalog.md plus four derived operational artefacts).
 
-- **`scan`** → invoke `/gap-hunter:scan` with the remaining arguments
-- **`explore`** → invoke `/gap-hunter:explore` with the remaining arguments
-- **`research`** → invoke `/gap-hunter:research` with the remaining arguments
-- **`verify`** → invoke `/gap-hunter:verify` with the remaining arguments
-- **`resume`** → invoke `/gap-hunter:resume` with the remaining arguments
-- **No argument or unknown argument** → show the menu below and ask which mode to use
+Total runtime: ~4-6 hours. Designed for overnight execution.
 
-## Menu (when no valid mode argument)
+## Pre-flight (mandatory — these are not optional)
 
-If the user did not specify a clear mode, present this menu and ask which fits:
+1. **Smoke test recommended.** Before launching the full run, recommend the user runs the smoke test (5-minute dry-run that confirms terminal, paths, permissions). Skip only if user explicitly confirms setup is verified.
+2. **Honest-filter recommended.** If no recent `triage-report.md` exists, recommend running `/gap-hunter:honestfilter` first. Allow override — the user may already know they want the main event.
+3. **`_shared-context.md` required.** Refuse if missing. Offer skeleton generation.
+4. **Adaptor selected.** Confirm which adaptor (`saas-feature` / `ml-model` / `hardware` / `compliance-heavy` / `generic`) — load from `adaptors/<id>.yaml`.
+5. **Project architecture document referenced** for the Contradictions agent. If missing, surface as a warning but allow proceeding (the agent will operate on `_shared-context.md` alone with reduced quality).
+6. **Output directory** `round-N/` created with write permissions.
+7. **No other Claude Code session** running in this project (race condition prevention on `brain.md`).
+8. **`.gap-hunter/state.json` initialised** for resume capability.
+9. **`.gap-hunter/plan.md` written** with the orchestrator's plan for this run (survives context compaction).
+10. **Watchdog optional.** Recommend launching `scripts/watchdog.sh` in a separate terminal during overnight runs.
 
-```
-Gap-Hunter Pattern — choose a mode:
+## Chain to execute (sequential, with state tracking)
 
-scan      — Should you run this pattern at all? Quick check (~10 min). Recommended for new users.
-explore   — Scope isn't fixed yet. Reduced 3-agent chain (~1-2h).
-research  — Scope is locked, time to commit. Full 8-agent chain with emergent spawning (~4-6h).
-verify    — After your first execution wave. Reality-check chain (~2-3h).
-resume    — Continue an interrupted run.
+Spawn each agent via the Agent tool, waiting for completion before the next. After each, update `.gap-hunter/state.json`.
 
-Not sure? Run: /gap-hunter:scan
-```
+**Phase 1: Breadth**
+1. **wildcard-breadth** — `agents/wildcard-breadth.md`
+2. **methodology** — `agents/methodology.md`
+3. **orchestration** — `agents/orchestration.md`
+4. **structure** — `agents/structure.md`
 
-After the user picks a mode, route to the appropriate sub-command.
+**Phase 2: Perspectives**
+5. **stakeholder-sweep** — `agents/stakeholder-sweep.md`
 
-## Pre-flight checks (before routing to any mode)
+**Phase 3: Depth**
+6. **contradictions** — `agents/contradictions.md`
+7. **gap-hunter** — `agents/gap-hunter.md`. May spawn up to 3 emergent agents (Gen 1 only).
+8. **verifier** — `agents/verifier.md`. Sidecar pattern — never modifies Gap-Hunter output.
 
-Before launching any mode, confirm:
+**Phase 4: Consolidation**
+9. **consolidation** — `agents/consolidation.md`. Reads everything including verifier sidecar.
 
-1. The user has prepared `_shared-context.md` (project context, invariants, current phase). If not, ask them to write one or offer to generate a skeleton.
-2. The output directory `round-N/` exists or can be created.
-3. For modes other than `scan`: a recent triage report exists, OR the user has explicitly confirmed they want to skip the scan.
-4. Any other Claude Code sessions in this project are closed (prevents race conditions on `brain.md`).
+## Quality gates between agents
 
-If any pre-flight check fails, surface it before launching. Do not silently proceed.
+After each agent completes, validate:
+- Output file exists at expected path
+- Output meets minimum length (~300 words for research agents, schema check for verifier)
+- `brain.md` was appended with the agent's mandatory section
+
+If validation fails: re-run the agent **once** with stricter briefing. If second run also fails: hard-fail with clear log entry, do not silently proceed.
+
+## Verifier handling
+
+The Verifier produces `gap-hunter-OUTPUT.verifier.json`. If `gap_hunter_quality_signal.score == "low"`:
+- Surface this prominently to the user before running the Consolidation agent
+- Recommend human review of the Gap-Hunter output before proceeding
+- Allow the user to defer Consolidation until they have reviewed
+
+## Post-run
+
+Run `scripts/post-process.sh` to generate:
+- `strategy/decisions.md` (architecture decision records, one per Must-recommendation)
+- `strategy/tasks.json` (importable into Linear / GitHub Issues / Jira)
+- `strategy/risk-register.md` (contradictions register reformatted)
+- `strategy/wave-briefings/` (one execution-ready briefing per Must-recommendation)
+
+Surface the paths to all five artefacts to the user (catalogue + four derived).
+
+## Anti-patterns to avoid
+
+- Do **not** spawn agents in parallel. The chain depends on sequential context-sharing through `brain.md`.
+- Do **not** skip the Verifier even if Gap-Hunter output looks good. Quality gate is non-negotiable.
+- Do **not** silently override the verifier's `low` quality signal.
+- Do **not** allow Gen 2 spawning — emergent agents may not spawn further agents.
+- Do **not** modify any prior agent's output. All agent outputs are append-only or sidecar.
