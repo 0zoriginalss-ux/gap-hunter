@@ -139,7 +139,7 @@ Or if you're not sure whether the pattern even fits your situation, start with t
 | `/gap-hunter:go` | **The main event** — full overnight research before you commit to build | Scope is locked, you're about to commit code | ~45min-2 h (overnight) |
 | `/gap-hunter:honestfilter` | The honest filter — checks if the pattern fits, can recommend skipping | You're not sure if the pattern is worth running at all | ~10 min |
 | `/gap-hunter:mini` | The mini version of `go` — reduced 3-agent chain | Scope is open, you don't yet know what you're building | ~30 |
-| `/gap-hunter:verify` | Reality-check after shipping one wave | Wave 1 shipped, before next wave | ~20min-1h h |
+| `/gap-hunter:verify` | Reality-check after shipping one wave | Wave 1 shipped, before next wave | ~20min-1h |
 | `/gap-hunter:resume` | Continue an interrupted run | Last run was killed by rate-limit / network / context-compaction | varies |
 
 **If you're new** and unsure whether the pattern fits, start with `/gap-hunter:honestfilter`. It is allowed (and encouraged) to recommend NOT running the pattern when a simpler path fits — that's the most distinctive thing about this repo.
